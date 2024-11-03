@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: v1-2
+      author: ssss1131
+      changes:
+        - createTable:
+            tableName: locations
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                  autoIncrement: true
+              - column:
+                  name: name
+                  type: varchar(128)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: latitude
+                  type: decimal(10, 6)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: longitude
+                  type: decimal(10, 6)
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: locations
+            baseColumnNames: user_id
+            constraintName: locations_user_id_fkey
+            referencedTableName: users
+            referencedColumnNames: id
+            deleteCascade: true

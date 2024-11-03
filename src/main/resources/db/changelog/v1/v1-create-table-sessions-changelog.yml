@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: v1-3
+      author: ssss1131
+      changes:
+        - createTable:
+            tableName: sessions
+            columns:
+              - column:
+                  name: id
+                  type: varchar(36)
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expires_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: sessions
+            baseColumnNames: user_id
+            constraintName: sessions_user_id_fkey
+            referencedTableName: users
+            referencedColumnNames: id
+            deleteCascade: true

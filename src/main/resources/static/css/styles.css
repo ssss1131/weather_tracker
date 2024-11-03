@@ -1,0 +1,25 @@
+.error-message {
+    color: #dc3545;
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+/* auth */
+.auth {
+    background: url('../images/weather-background.png') no-repeat center center fixed;
+    background-size: cover;
+}
+
+.auth .card {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    padding-top: 40px;
+}
+
+.auth .weather-icon {
+    width: 80px;
+    height: 80px;
+    margin-top: 10px;
+}
+
+

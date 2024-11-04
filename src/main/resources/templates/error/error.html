@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+</head>
+<body>
+<h1>Something went wrong</h1>
+<p>An unexpected error occurred while processing your request.</p>
+
+<div th:if="${exception}">
+    <h3>Error Details:</h3>
+    <p th:text="${exception.message}">Error message here</p>
+</div>
+
+<p th:if="${url}">
+    <strong>URL:</strong> <span th:text="${url}"></span>
+</p>
+
+<p>
+    <a href="/">Return to Home</a>
+</p>
+</body>
+</html>

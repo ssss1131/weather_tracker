@@ -3,7 +3,6 @@ package com.ssss.weather_tracker.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.web.bind.annotation.GetMapping;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,16 +19,18 @@ public class Location {
 
     private String name;
 
-    private long userId;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     private double latitude;
 
     private double longitude;
 
     @Builder
-    public Location(String name, long userId, double latitude, double longitude) {
+    public Location(String name, User user, double latitude, double longitude) {
         this.name = name;
-        this.userId = userId;
+        this.user = user;
         this.latitude = latitude;
         this.longitude = longitude;
     }

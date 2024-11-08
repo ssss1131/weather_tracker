@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.NaturalId;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,8 +20,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NaturalId
+    @Column(unique = true, nullable = false)
     private String login;
 
+    @Column(nullable = false)
     private String password;
 
     @Builder

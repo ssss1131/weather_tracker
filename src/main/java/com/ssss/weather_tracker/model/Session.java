@@ -1,10 +1,9 @@
 package com.ssss.weather_tracker.model;
 
-
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,10 +15,20 @@ import java.sql.Timestamp;
 public class Session {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    @GeneratedValue
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
 
-    private Long userId;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    private Timestamp expiresAt;
+    @Column(name = "expires_at", nullable = false)
+    private LocalDateTime expiresAt;
+
+    @Builder
+    public Session(User user, LocalDateTime expiresAt) {
+        this.user = user;
+        this.expiresAt = expiresAt;
+    }
 }

@@ -7,7 +7,7 @@ import org.hibernate.Transaction;
 import org.springframework.cglib.core.internal.Function;
 
 @RequiredArgsConstructor
-public class AbstractRepository {
+public class AbstractRepository<E> {
 
     private final SessionFactory sessionFactory;
 
@@ -24,6 +24,13 @@ public class AbstractRepository {
             }
             throw e;
         }
+    }
+
+    public E save(E entity){
+        return executeInTransaction(session ->{
+           session.persist(entity);
+           return entity;
+        });
     }
 
 }

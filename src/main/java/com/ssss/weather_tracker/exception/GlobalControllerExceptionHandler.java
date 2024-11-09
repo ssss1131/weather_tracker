@@ -1,5 +1,6 @@
 package com.ssss.weather_tracker.exception;
 
+import com.ssss.weather_tracker.dto.request.UserLoginDto;
 import com.ssss.weather_tracker.dto.request.UserRegistrationDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -18,6 +19,15 @@ public class GlobalControllerExceptionHandler {
         mav.addObject("errorMessage", ex.getMessage());
         mav.addObject("user", new UserRegistrationDto());
         mav.setViewName("/auth/register");
+        return mav;
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ModelAndView handleAuthenticationException(AuthenticationException ex){
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("errorMessage", ex.getMessage());
+        mav.addObject("user", new UserLoginDto());
+        mav.setViewName("/auth/login");
         return mav;
     }
 //

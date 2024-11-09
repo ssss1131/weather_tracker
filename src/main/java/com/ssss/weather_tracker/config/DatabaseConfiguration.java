@@ -17,7 +17,7 @@ import java.util.Properties;
 
 @Configuration
 @RequiredArgsConstructor
-@PropertySource("classpath:hibernate.properties")
+@PropertySource("classpath:hibernates.properties")
 public class DatabaseConfiguration {
 
     private final Environment env;
@@ -49,7 +49,6 @@ public class DatabaseConfiguration {
         sessionFactory.setDataSource(dataSource());
         sessionFactory.setPackagesToScan("com.ssss.weather_tracker.model");
         sessionFactory.setHibernateProperties(hibernateProperties());
-
         return sessionFactory;
     }
 

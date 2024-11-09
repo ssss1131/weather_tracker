@@ -14,6 +14,9 @@
                 <img th:src="@{/images/weather-icon.png}" alt="Weather Icon" class="weather-icon mx-auto d-block">
             <div class="card-body">
                 <h3 class="card-title text-center mb-4">Login</h3>
+
+                <div th:if="${errorMessage}" class="alert alert-danger mt-2" th:text="${errorMessage}"></div>
+
                 <form th:action="@{/auth/login}" th:object="${user}" th:method="POST">
                     <div class="form-group">
                         <label for="username">Username</label>

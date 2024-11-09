@@ -3,12 +3,16 @@ package com.ssss.weather_tracker.dto.request;
 import com.ssss.weather_tracker.validation.PasswordMatches;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @PasswordMatches
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserRegistrationDto {
 
     @NotBlank(message = "Login cannot be empty or whitespace")

@@ -3,9 +3,7 @@ package com.ssss.weather_tracker.controller;
 
 import com.ssss.weather_tracker.dto.request.UserLoginDto;
 import com.ssss.weather_tracker.dto.request.UserRegistrationDto;
-import com.ssss.weather_tracker.model.User;
 import com.ssss.weather_tracker.service.AuthenticationService;
-import com.ssss.weather_tracker.service.SessionService;
 import com.ssss.weather_tracker.util.CookieHelper;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -28,7 +26,6 @@ import java.util.UUID;
 public class AuthController {
 
     private final AuthenticationService authenticationService;
-    private final SessionService sessionService;
 
     @Value("${session.cookie.max-age}")
     private int sessionCookieMaxAge;
@@ -47,13 +44,8 @@ public class AuthController {
         if(bindingResult.hasErrors()){
             return "/auth/login";
         }
-        Optional<User> maybeFoundUser = authenticationService.login(userDto);
-        if(maybeFoundUser.isEmpty()){
-            bindingResult.addError(new FieldError("user", "login", "Login or Password is incorrect"));
-            return "/auth/login";
-        }
-        User user = maybeFoundUser.get();
-        sessionService.refreshSession(user, sessionCookieMaxAge);
+        UUID uuid = authenticationService.authenticate(userDto);
+        CookieHelper.createCookie(sessionCookieName, String.valueOf(uuid), sessionCookieMaxAge, response);
         return "redirect:/home";
     }
 
@@ -71,8 +63,7 @@ public class AuthController {
         if(bindingResult.hasErrors()){
             return "/auth/register";
         }
-        User registeredUser = authenticationService.register(user);
-        UUID uuid = sessionService.createSession(registeredUser, sessionCookieMaxAge);
+        UUID uuid = authenticationService.register(user);
         CookieHelper.createCookie(sessionCookieName, uuid.toString(), sessionCookieMaxAge, response);
         return "redirect:/home";
     }

@@ -34,10 +34,11 @@ class AuthenticationServiceTest {
     @Autowired
     private SessionFactory sessionFactory;
 
-    private static UserLoginDto userLoginDto;
-    private static UserRegistrationDto userRegistrationDto;
     @Autowired
     private SessionService sessionService;
+
+    private static UserLoginDto userLoginDto;
+    private static UserRegistrationDto userRegistrationDto;
 
     @BeforeAll
     static void setUp() {
@@ -59,7 +60,7 @@ class AuthenticationServiceTest {
     @Test
     void register_NewUser_CreateNewSession() {
         UUID uuid = authenticationService.register(userRegistrationDto);
-        Optional<Session> session = sessionService.getSession(String.valueOf(uuid));
+        Optional<Session> session = sessionService.getSessionWithUser(String.valueOf(uuid));
         assertTrue(session.isPresent());
         assertEquals(session.get().getUser().getLogin(), userRegistrationDto.getLogin());
     }
@@ -80,9 +81,9 @@ class AuthenticationServiceTest {
     @Test
     void authenticate_ExistingUser_ShouldRefreshSession() {
         UUID uuid = authenticationService.register(userRegistrationDto);
-        Session sessionBeforeLogin = sessionService.getSession(String.valueOf(uuid)).get();
+        Session sessionBeforeLogin = sessionService.getSessionWithUser(String.valueOf(uuid)).get();
         UUID optionalUUID = authenticationService.authenticate(userLoginDto);
-        Session sessionAfterLogin = sessionService.getSession(optionalUUID.toString()).get();
+        Session sessionAfterLogin = sessionService.getSessionWithUser(optionalUUID.toString()).get();
         assertTrue(sessionBeforeLogin.getExpiresAt().isBefore(sessionAfterLogin.getExpiresAt()));
     }
 

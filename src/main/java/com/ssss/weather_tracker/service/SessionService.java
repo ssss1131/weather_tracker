@@ -37,7 +37,7 @@ public class SessionService {
         return session.getId();
     }
 
-    public Optional<Session> getSession(String id) {
+    public Optional<Session> getSessionWithUser(String id) {
        return Optional.ofNullable(sessionRepository.findById(UUID.fromString(id)));
     }
 

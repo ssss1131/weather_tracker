@@ -11,17 +11,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Optional;
 import java.util.UUID;
 
+import static com.ssss.weather_tracker.util.Constants.*;
+
 @Controller
-@RequestMapping("/auth")
+@RequestMapping(AUTH_BASE)
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -33,39 +33,39 @@ public class AuthController {
     @Value("${session.cookie.name}")
     private String sessionCookieName;
 
-    @GetMapping("/login")
-    public String loginForm(@ModelAttribute("user") UserLoginDto user) {
-        return "/auth/login";
+    @GetMapping(LOGIN)
+    public String loginForm(@ModelAttribute(USER_ATTRIBUTE) UserLoginDto user) {
+        return LOGIN_VIEW;
     }
 
-    @PostMapping("/login")
-    public String login(@ModelAttribute("user") @Valid UserLoginDto userDto,
+    @PostMapping(LOGIN)
+    public String login(@ModelAttribute(USER_ATTRIBUTE) @Valid UserLoginDto userDto,
                         BindingResult bindingResult, HttpServletResponse response){
         if(bindingResult.hasErrors()){
-            return "/auth/login";
+            return LOGIN_VIEW;
         }
         UUID uuid = authenticationService.authenticate(userDto);
         CookieHelper.createCookie(sessionCookieName, String.valueOf(uuid), sessionCookieMaxAge, response);
-        return "redirect:/home";
+        return REDIRECT_HOME;
     }
 
     
 
-    @GetMapping("/register")
-    public String registerForm(@ModelAttribute("user") UserRegistrationDto user){
-        return "/auth/register";
+    @GetMapping(REGISTER)
+    public String registerForm(@ModelAttribute(USER_ATTRIBUTE) UserRegistrationDto user){
+        return REGISTER_VIEW;
     }
 
 
-    @PostMapping("/register")
-    public String register(@ModelAttribute("user") @Valid UserRegistrationDto user,
+    @PostMapping(REGISTER)
+    public String register(@ModelAttribute(USER_ATTRIBUTE) @Valid UserRegistrationDto user,
                            BindingResult bindingResult, HttpServletResponse response){
         if(bindingResult.hasErrors()){
-            return "/auth/register";
+            return REGISTER_VIEW;
         }
         UUID uuid = authenticationService.register(user);
         CookieHelper.createCookie(sessionCookieName, uuid.toString(), sessionCookieMaxAge, response);
-        return "redirect:/home";
+        return REDIRECT_HOME;
     }
 
 

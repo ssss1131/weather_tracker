@@ -12,6 +12,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.util.Optional;
 
+import static com.ssss.weather_tracker.util.Constants.*;
+
 @Component
 @RequiredArgsConstructor
 public class SessionInterceptor implements HandlerInterceptor {
@@ -39,7 +41,7 @@ public class SessionInterceptor implements HandlerInterceptor {
      * @param request current HTTP request
      * @param response current HTTP response
      * @param handler chosen handler to execute, for type and/or instance evaluation
-     * @return
+     * @return boolean
      * @throws Exception
      */
     @Override
@@ -55,12 +57,12 @@ public class SessionInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        response.sendRedirect("/auth/login");
+        response.sendRedirect(AUTH_LOGIN);
         return false;
     }
 
     private boolean processExistingSession(String sessionId, HttpServletRequest request, HttpServletResponse response, String requestURI) throws Exception {
-        Optional<Session> sessionOpt = sessionService.getSession(sessionId);
+        Optional<Session> sessionOpt = sessionService.getSessionWithUser(sessionId);
 
         if (sessionOpt.isEmpty()) {
             return false;
@@ -68,7 +70,7 @@ public class SessionInterceptor implements HandlerInterceptor {
 
         Session session = sessionOpt.get();
         if (isAuthPage(requestURI)) {
-            response.sendRedirect("/home");
+            response.sendRedirect(HOME);
             return false;
         }
 
@@ -82,7 +84,7 @@ public class SessionInterceptor implements HandlerInterceptor {
     }
 
     private static boolean isAuthPage(String requestURI) {
-        return requestURI.equals("/auth/login") || requestURI.equals("/auth/register");
+        return requestURI.equals(AUTH_LOGIN) || requestURI.equals(AUTH_REGISTER);
     }
 
 

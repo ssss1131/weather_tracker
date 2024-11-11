@@ -2,13 +2,12 @@ package com.ssss.weather_tracker.exception;
 
 import com.ssss.weather_tracker.dto.request.UserLoginDto;
 import com.ssss.weather_tracker.dto.request.UserRegistrationDto;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import static com.ssss.weather_tracker.util.Constants.LOGIN_VIEW;
+import static com.ssss.weather_tracker.util.Constants.REGISTER_VIEW;
 
 @ControllerAdvice
 public class GlobalControllerExceptionHandler {
@@ -18,7 +17,7 @@ public class GlobalControllerExceptionHandler {
         ModelAndView mav = new ModelAndView();
         mav.addObject("errorMessage", ex.getMessage());
         mav.addObject("user", new UserRegistrationDto());
-        mav.setViewName("/auth/register");
+        mav.setViewName(REGISTER_VIEW);
         return mav;
     }
 
@@ -27,7 +26,7 @@ public class GlobalControllerExceptionHandler {
         ModelAndView mav = new ModelAndView();
         mav.addObject("errorMessage", ex.getMessage());
         mav.addObject("user", new UserLoginDto());
-        mav.setViewName("/auth/login");
+        mav.setViewName(LOGIN_VIEW);
         return mav;
     }
 //

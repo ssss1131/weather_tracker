@@ -3,11 +3,14 @@ package com.ssss.weather_tracker.repository;
 import com.ssss.weather_tracker.model.Session;
 import com.ssss.weather_tracker.model.User;
 import org.hibernate.SessionFactory;
+import org.hibernate.graph.GraphSemantic;
+import org.hibernate.graph.RootGraph;
 import org.hibernate.query.MutationQuery;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.UUID;
 
 @Repository
@@ -18,7 +21,14 @@ public class SessionRepository extends AbstractRepository<Session> {
     }
 
     public Session findById(UUID id) {
-        return executeInTransaction(session -> session.find(Session.class, id));
+        return executeInTransaction(session -> {
+            RootGraph<Session> graph = session.createEntityGraph(Session.class);
+            graph.addAttributeNode("user");
+            Map<String, Object> properties = Map.of(
+                    GraphSemantic.LOAD.getJakartaHintName(), graph
+            );
+            return session.find(Session.class, id, properties);
+        });
     }
 
 
@@ -35,7 +45,7 @@ public class SessionRepository extends AbstractRepository<Session> {
     public Session findByUser(User user) {
         return executeInTransaction(session ->
                 session.createQuery("FROM Session s WHERE s.user = :user", Session.class)
-                .setParameter("user", user)
-                .getSingleResult());
+                        .setParameter("user", user)
+                        .getSingleResult());
     }
 }

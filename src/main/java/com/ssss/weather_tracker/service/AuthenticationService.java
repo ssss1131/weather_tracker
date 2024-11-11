@@ -4,15 +4,16 @@ import com.ssss.weather_tracker.dto.request.UserLoginDto;
 import com.ssss.weather_tracker.dto.request.UserRegistrationDto;
 import com.ssss.weather_tracker.exception.AuthenticationException;
 import com.ssss.weather_tracker.exception.UserAlreadyExistsException;
-import com.ssss.weather_tracker.model.Session;
 import com.ssss.weather_tracker.model.User;
 import com.ssss.weather_tracker.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.UUID;
+
+import static com.ssss.weather_tracker.util.PasswordSecurity.hash;
+import static com.ssss.weather_tracker.util.PasswordSecurity.isEqualPasswords;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +28,7 @@ public class AuthenticationService {
     public UUID register(UserRegistrationDto userDto){
         User user = User.builder()
                 .login(userDto.getLogin())
-                .password(userDto.getPassword())
+                .password(hash(userDto.getPassword()))
                 .build();
         if(userRepository.existsByLogin(user.getLogin())){
            throw new UserAlreadyExistsException("User with login " + user.getLogin() + " already exists.");
@@ -42,7 +43,7 @@ public class AuthenticationService {
                 .orElseThrow(() -> new AuthenticationException("Invalid username or password"));
 
         // TODO: Add BCrypt comparison for userDto.password()
-        if (!user.getPassword().equals(userDto.getPassword())) {
+        if (!isEqualPasswords(userDto.getPassword(), user.getPassword())) {
             throw new AuthenticationException("Invalid username or password");
         }
 

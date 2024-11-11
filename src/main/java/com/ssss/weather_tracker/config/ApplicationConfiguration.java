@@ -2,11 +2,13 @@ package com.ssss.weather_tracker.config;
 
 import com.ssss.weather_tracker.controller.interceptor.SessionInterceptor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.servlet.config.annotation.*;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
@@ -27,6 +29,14 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
         registry.addResourceHandler("/css/**").addResourceLocations("classpath:/static/css/");
         registry.addResourceHandler("/images/**").addResourceLocations("classpath:/static/images/");
     }
+
+    @Bean
+    public RestClient restClient(@Value("${weather.api.baseurl}") String url){
+        return RestClient.builder()
+                .baseUrl(url)
+                .build();
+    }
+
 
     @Bean
     public SpringResourceTemplateResolver templateResolver() {

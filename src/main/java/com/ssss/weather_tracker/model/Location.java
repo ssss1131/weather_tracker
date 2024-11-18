@@ -1,6 +1,5 @@
 package com.ssss.weather_tracker.model;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,16 +9,18 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "user")
 @Table(name = "locations")
 @Entity
 public class Location {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String name;
+
+    private String state;
 
     @ManyToOne(optional = false,  fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)

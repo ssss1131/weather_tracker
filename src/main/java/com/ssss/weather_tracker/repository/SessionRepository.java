@@ -3,10 +3,10 @@ package com.ssss.weather_tracker.repository;
 import com.ssss.weather_tracker.model.Session;
 import com.ssss.weather_tracker.model.User;
 import org.hibernate.SessionFactory;
+import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.graph.GraphSemantic;
 import org.hibernate.graph.RootGraph;
 import org.hibernate.query.MutationQuery;
-import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -47,5 +47,10 @@ public class SessionRepository extends AbstractRepository<Session> {
                 session.createQuery("FROM Session s WHERE s.user = :user", Session.class)
                         .setParameter("user", user)
                         .getSingleResult());
+    }
+
+    @Override
+    protected void handleConstraintViolationException(ConstraintViolationException e) {
+        throw e;
     }
 }

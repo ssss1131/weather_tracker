@@ -3,7 +3,6 @@ package com.ssss.weather_tracker.service;
 import com.ssss.weather_tracker.dto.response.api.GeoLocationDto;
 import com.ssss.weather_tracker.dto.response.api.WeatherDto;
 import com.ssss.weather_tracker.exception.api.BadRequestException;
-import com.ssss.weather_tracker.exception.api.EmptyBodyException;
 import com.ssss.weather_tracker.exception.api.OpenWeatherServerException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,14 +47,10 @@ public class OpenWeatherService {
                 .body(new ParameterizedTypeReference<>() {
                 });
 
-        if (body == null){
-            throw new EmptyBodyException();
-        }
-
         List<WeatherDto> weatherDataList  = new ArrayList<>();
         for (GeoLocationDto geoLocationDto : body) {
             WeatherDto weatherDto = retrieveWeatherByCoordinates(geoLocationDto.getLatitude(), geoLocationDto.getLongitude());
-            weatherDto.setName(geoLocationDto.getName());
+            setValidInfo(geoLocationDto, weatherDto);
             weatherDataList.add(weatherDto);
         }
         return weatherDataList;
@@ -79,4 +74,8 @@ public class OpenWeatherService {
                 .body(new ParameterizedTypeReference<>() {});
     }
 
+    private void setValidInfo(GeoLocationDto geoLocationDto, WeatherDto weatherDto) {
+        weatherDto.setName(geoLocationDto.getName());
+        weatherDto.setState(geoLocationDto.getState());
+    }
 }

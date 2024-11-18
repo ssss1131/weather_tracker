@@ -1,15 +1,238 @@
+body {
+    background-color: #f0f4f8;
+    font-family: Arial, sans-serif;
+}
 .error-message {
     color: #dc3545;
     font-size: 0.9rem;
     margin-top: 5px;
 }
 
+.empty-message {
+    font-size: 1.5rem;
+    color: #6c757d;
+    margin-top: 20px;
+    padding: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.search .empty-message:hover{
+    color:darkred;
+}
+
+.home .empty-message:hover {
+    color: #007bff;
+}
+
+/* Navbar styles */
+.navbar {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar .navbar-brand {
+    font-weight: bold;
+}
+
+.navbar .btn {
+    margin-left: 10px;
+}
+
+/* Weather Tracker */
+.home .card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+    background: #ffffff;
+}
+
+.home .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    background-color: #f0f4f8; /* Фон при наведении */
+}
+
+.home .card img {
+    object-fit: cover;
+    height: 200px;
+}
+
+.home .icon-row img {
+    height: 24px;
+    width: 24px;
+    margin-right: 8px;
+}
+
+.home .location-info {
+    font-size: 1.2rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.home .country-code {
+    font-size: 1rem;
+    color: #888;
+}
+
+.home .country-flag {
+    height: 20px !important;
+    width: auto !important;
+    margin-left: 8px;
+    display: inline-block;
+}
+
+.home .weather-icon {
+    height: 100px;
+    width: auto;
+    object-fit: contain;
+    margin: 0 auto;
+}
+
+.home .delete-form {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.home .delete-btn {
+    border: none;
+    background: none;
+    font-size: 1.5rem;
+    color: #dc3545;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.home .delete-btn:hover {
+    color: #ff0000;
+}
+
+.home .card-body {
+    background-color: #f9fafc;
+    padding: 20px;
+}
+
+.home .card-body:hover {
+    background-color: #f0f4f8;
+}
+
+.home .icon-row {
+    border-top: 1px solid #e0e4e8;
+    padding-top: 15px;
+    margin-top: 10px;
+}
+
+/*"Search Results*/
+
+.search .card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    background: #ffffff;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    min-height: 360px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.search .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.search .card-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+}
+
+.search .heart-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    border: none;
+    background: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.search .heart-btn.liked {
+    color: #e74c3c;
+}
+
+.search .heart-btn.unliked {
+    color: #bdc3c7;
+}
+
+.search .country-info {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #555;
+    margin-top: 15px;
+}
+
+.search .country-flag {
+    height: 20px;
+    width: auto;
+    margin-left: 8px;
+}
+
+.search .details {
+    font-size: 1.1rem;
+    margin-top: 25px;
+    color: #444;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.search .details div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 5px 0;
+    border-bottom: 1px solid #ececec;
+}
+
+.search .details div:last-child {
+    border-bottom: none;
+}
+
+.search .details span {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.search .temperature {
+    font-size: 1.4rem;
+    color: #2980b9;
+}
+
+.search .temp-label {
+    color: #888;
+    font-weight: normal;
+    font-size: 1rem;
+}
+
+
+
+
 /* auth */
+
 .auth {
     background: url('../images/weather-background.png') no-repeat center center fixed;
     background-size: cover;
 }
-
 .auth .card {
     background: rgba(255, 255, 255, 0.9);
     border-radius: 8px;
@@ -21,5 +244,46 @@
     height: 80px;
     margin-top: 10px;
 }
+
+/* 404-500*/
+.error .error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+    color: #495057;
+}
+
+.error .error-title {
+    font-size: 4rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #dc3545;
+}
+
+.error .error-message {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.error .error-action {
+    margin-top: 2rem;
+}
+
+.error .error-action a {
+    font-size: 1.2rem;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.error .error-action a:hover {
+    text-decoration: underline;
+}
+
+
 
 

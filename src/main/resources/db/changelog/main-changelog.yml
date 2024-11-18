@@ -3,7 +3,7 @@ databaseChangeLog:
       file: v1/v1-create-table-users-changelog.yml
       relativeToChangelogFile: true
   - include:
-      file: v1/v1-create-table-locations-changelog.yml
+      file: v2/v2-create-table-locations-changelog.yml
       relativeToChangelogFile: true
   - include:
       file: v1/v1-create-table-sessions-changelog.yml

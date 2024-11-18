@@ -64,7 +64,7 @@ public class AuthController {
         return REDIRECT_HOME;
     }
 
-    @PostMapping(SIGNOUT)
+    @PostMapping(SIGN_OUT)
     public String signOut(@CookieValue(value = "${session.cookie.name}", defaultValue = "") String sessionId, HttpServletResponse response) {
         authenticationService.signOut(sessionId, sessionCookieName, response);
         return REDIRECT_LOGIN;

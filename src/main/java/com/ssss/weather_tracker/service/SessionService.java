@@ -45,4 +45,8 @@ public class SessionService {
         LocalDateTime now = LocalDateTime.now();
         return session.getExpiresAt().isBefore(now.plusMinutes(10));
     }
+
+    public void invalidate(String session) {
+        sessionRepository.updateTime(UUID.fromString(session), LocalDateTime.now());
+    }
 }

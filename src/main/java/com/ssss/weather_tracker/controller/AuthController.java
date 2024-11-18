@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -40,8 +37,8 @@ public class AuthController {
 
     @PostMapping(LOGIN)
     public String login(@ModelAttribute(USER_ATTRIBUTE) @Valid UserLoginDto userDto,
-                        BindingResult bindingResult, HttpServletResponse response){
-        if(bindingResult.hasErrors()){
+                        BindingResult bindingResult, HttpServletResponse response) {
+        if (bindingResult.hasErrors()) {
             return LOGIN_VIEW;
         }
         UUID uuid = authenticationService.authenticate(userDto);
@@ -49,23 +46,28 @@ public class AuthController {
         return REDIRECT_HOME;
     }
 
-    
 
     @GetMapping(REGISTER)
-    public String registerForm(@ModelAttribute(USER_ATTRIBUTE) UserRegistrationDto user){
+    public String registerForm(@ModelAttribute(USER_ATTRIBUTE) UserRegistrationDto user) {
         return REGISTER_VIEW;
     }
 
 
     @PostMapping(REGISTER)
     public String register(@ModelAttribute(USER_ATTRIBUTE) @Valid UserRegistrationDto user,
-                           BindingResult bindingResult, HttpServletResponse response){
-        if(bindingResult.hasErrors()){
+                           BindingResult bindingResult, HttpServletResponse response) {
+        if (bindingResult.hasErrors()) {
             return REGISTER_VIEW;
         }
         UUID uuid = authenticationService.register(user);
         CookieHelper.createCookie(sessionCookieName, uuid.toString(), sessionCookieMaxAge, response);
         return REDIRECT_HOME;
+    }
+
+    @PostMapping(SIGNOUT)
+    public String signOut(@CookieValue(value = "${session.cookie.name}", defaultValue = "") String sessionId, HttpServletResponse response) {
+        authenticationService.signOut(sessionId, sessionCookieName, response);
+        return REDIRECT_LOGIN;
     }
 
 

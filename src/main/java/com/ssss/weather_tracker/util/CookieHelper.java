@@ -30,4 +30,11 @@ public class CookieHelper {
                 .map(Cookie::getValue)
                 .findFirst();
     }
+
+    public static void invalidateCookie(String cookieName, HttpServletResponse response) {
+        Cookie cookie = new Cookie(cookieName, null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+    }
 }

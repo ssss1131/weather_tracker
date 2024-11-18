@@ -6,6 +6,8 @@ import com.ssss.weather_tracker.exception.AuthenticationException;
 import com.ssss.weather_tracker.exception.UserAlreadyExistsException;
 import com.ssss.weather_tracker.model.User;
 import com.ssss.weather_tracker.repository.UserRepository;
+import com.ssss.weather_tracker.util.CookieHelper;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -39,10 +41,9 @@ public class AuthenticationService {
 
 
     public UUID authenticate(UserLoginDto userDto) throws AuthenticationException {
-        User user = userRepository.find(userDto.getLogin())
+        User user = userRepository.findByLogin(userDto.getLogin())
                 .orElseThrow(() -> new AuthenticationException("Invalid username or password"));
 
-        // TODO: Add BCrypt comparison for userDto.password()
         if (!isEqualPasswords(userDto.getPassword(), user.getPassword())) {
             throw new AuthenticationException("Invalid username or password");
         }
@@ -50,4 +51,8 @@ public class AuthenticationService {
         return sessionService.refreshSession(user, sessionCookieMaxAge);
     }
 
+    public void signOut(String session,String sessionCookieName, HttpServletResponse response) {
+        sessionService.invalidate(session);
+        CookieHelper.invalidateCookie(sessionCookieName, response);
+    }
 }

@@ -79,7 +79,8 @@ public class SessionInterceptor implements HandlerInterceptor {
             CookieHelper.createCookie(sessionCookieName, sessionId, sessionCookieMaxAge, response);
         }
 
-        request.setAttribute("userId", session.getUser().getId());
+        request.setAttribute(USER_ID_ATTRIBUTE, session.getUser().getId());
+        request.setAttribute(USER_NAME_ATTRIBUTE, session.getUser().getLogin());
         return true;
     }
 

@@ -13,6 +13,8 @@ public class WeatherDto {
 
     private String name;
 
+    private String state;
+
     @JsonProperty("coord")
     private Coordinates coordinates;
 

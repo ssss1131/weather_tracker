@@ -12,12 +12,15 @@ public class GeoLocationDto {
 
     private String name;
 
+    private String state;
+
+    private String country;
+
     @JsonProperty("lat")
     private BigDecimal latitude;
 
     @JsonProperty("lon")
     private BigDecimal longitude;
 
-    private String country;
 
 }

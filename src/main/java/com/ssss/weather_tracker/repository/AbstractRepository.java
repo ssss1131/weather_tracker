@@ -4,10 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.cglib.core.internal.Function;
 
 @RequiredArgsConstructor
-public class AbstractRepository<E> {
+public abstract class AbstractRepository<E> {
 
     private final SessionFactory sessionFactory;
 
@@ -18,7 +19,11 @@ public class AbstractRepository<E> {
             T result = action.apply(session);
             transaction.commit();
             return result;
-        } catch (Exception e){
+        } catch (ConstraintViolationException e) {
+            handleConstraintViolationException(e);
+            throw  e;
+        }
+        catch (Exception e){
             if(transaction != null ){
                 transaction.rollback();
             }
@@ -28,9 +33,13 @@ public class AbstractRepository<E> {
 
     public E save(E entity){
         return executeInTransaction(session ->{
-           session.persist(entity);
-           return entity;
+            session.persist(entity);
+            return entity;
         });
     }
+
+    protected abstract void handleConstraintViolationException(ConstraintViolationException e);
+
+
 
 }
